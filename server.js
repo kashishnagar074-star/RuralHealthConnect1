@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 
 const express = require("express");
@@ -7,19 +8,18 @@ const { GoogleGenAI } = require("@google/genai");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Gemini AI setup
-const ai = process.env.GEMINI_API_KEY
-  ? new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
-    })
+// Initialize Gemini AI securely on the backend.
+const apiKey = process.env.GEMINI_API_KEY;
+
+const ai = apiKey
+  ? new GoogleGenAI({ apiKey })
   : null;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.json({ limit: "1mb" }));
 
-// Emergency symptoms
+// Emergency symptom keywords
 const emergencyKeywords = [
   "difficulty breathing",
   "cannot breathe",
@@ -31,51 +31,11 @@ const emergencyKeywords = [
   "severe bleeding",
   "seizure",
   "stroke",
-  "overdose"
-];
-
-// Basic health information
-const healthAnswers = [
-  {
-    keywords: ["fever", "temperature"],
-    answer:
-      "For a fever, rest, drink fluids, and monitor your temperature. Seek medical advice if the fever is persistent or worsening. Get urgent help if you experience confusion, difficulty breathing, or other severe symptoms."
-  },
-  {
-    keywords: ["headache", "head pain"],
-    answer:
-      "For a mild headache, rest, drink water, and avoid triggers such as bright lights. Seek medical attention for a sudden, extremely severe headache or a headache with weakness, confusion, or vision problems."
-  },
-  {
-    keywords: ["dehydration", "thirst", "water", "hydration"],
-    answer:
-      "To help prevent dehydration, drink water regularly, increase fluids during hot weather and exercise, and eat water-rich foods. If you have vomiting or diarrhea, an oral rehydration solution (ORS) may help. Seek urgent care for confusion, fainting, or inability to keep fluids down."
-  },
-  {
-    keywords: ["cough", "cold", "sore throat"],
-    answer:
-      "For a mild cough or cold, rest, drink fluids, and consider warm drinks for comfort. Seek medical advice if symptoms worsen or persist. Difficulty breathing or severe chest pain needs urgent medical attention."
-  },
-  {
-    keywords: ["burn", "burns", "burnt"],
-    answer:
-      "For a minor thermal burn, cool the area under cool running water for 20 minutes. Do not apply ice, toothpaste, or butter. Do not pull off clothing stuck to the burn. Get medical help for large, deep, chemical, or electrical burns, or burns affecting the face or airway."
-  },
-  {
-    keywords: ["stomach pain", "stomach ache", "abdominal pain"],
-    answer:
-      "Mild stomach discomfort may improve with rest and small sips of water. Avoid foods that worsen symptoms. Seek urgent care for severe or worsening pain, a rigid abdomen, blood in vomit or stool, or fainting."
-  },
-  {
-    keywords: ["vomiting", "vomit", "nausea"],
-    answer:
-      "Take small, frequent sips of water or ORS to help prevent dehydration. Seek medical care if vomiting continues, you cannot keep fluids down, you see blood, or you develop severe pain or signs of dehydration."
-  },
-  {
-    keywords: ["diarrhea", "loose motion", "loose motions"],
-    answer:
-      "Drink fluids and use ORS to replace lost water and salts. Continue eating as tolerated. Seek medical help for blood in stool, severe abdominal pain, high fever, or signs of dehydration."
-  }
+  "overdose",
+  "saans nahi aa rahi",
+  "saans lene mein dikkat",
+  "behosh",
+  "bahut khoon beh raha"
 ];
 
 // Home route
@@ -83,51 +43,78 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// Health check route
+// Backend health check
 app.get("/api/health", (req, res) => {
-  res.json({
+  res.status(200).json({
     success: true,
-    message: "RuralHealth Connect backend is running."
+    message: "RuralHealth Connect backend is running.",
+    aiConfigured: Boolean(apiKey)
   });
 });
 
-// Existing rule-based health assistant
+// Basic rule-based health assistant
 app.post("/api/health-assistant", (req, res) => {
-  const question = String(req.body.question || "").toLowerCase();
+  const question = String(req.body?.question || "").toLowerCase().trim();
 
-  if (!question.trim()) {
+  if (!question) {
     return res.status(400).json({
       success: false,
       message: "Please enter your health question."
     });
   }
 
-  if (emergencyKeywords.some((word) => question.includes(word))) {
+  if (emergencyKeywords.some(word => question.includes(word))) {
     return res.json({
       success: true,
       emergency: true,
       answer:
-        "Your symptoms may require emergency medical attention. Contact your local emergency service or go to the nearest emergency department now. In India, call 112 for emergency assistance.",
-      sourceNote: "General safety guidance"
+        "Your symptoms may require emergency medical attention. In India, call 112 or go to the nearest emergency department immediately.",
+      sourceNote: "Emergency safety guidance"
     });
   }
 
-  const matched = healthAnswers.find((item) =>
-    item.keywords.some((word) => question.includes(word))
+  const healthAnswers = [
+    {
+      keywords: ["dehydration", "thirst", "water", "hydration"],
+      answer:
+        "Drink water regularly, especially in hot weather and during exercise. If you have vomiting or diarrhoea, ORS can help replace lost fluids and salts. Seek urgent care for confusion, fainting, or inability to keep fluids down."
+    },
+    {
+      keywords: ["fever", "temperature"],
+      answer:
+        "Rest, drink fluids, and monitor your temperature. Seek medical advice if your fever persists or worsens. Get urgent help for confusion or difficulty breathing."
+    },
+    {
+      keywords: ["headache", "head pain"],
+      answer:
+        "For a mild headache, rest and drink water. Seek urgent medical care for a sudden, extremely severe headache or one accompanied by weakness, confusion, or vision problems."
+    },
+    {
+      keywords: ["cough", "cold", "sore throat"],
+      answer:
+        "For mild cold symptoms, rest and drink fluids. Seek medical advice if symptoms worsen or persist. Difficulty breathing requires urgent medical attention."
+    },
+    {
+      keywords: ["vomiting", "vomit", "nausea"],
+      answer:
+        "Take small, frequent sips of water or ORS. Seek medical care if you cannot keep fluids down, see blood, or develop severe pain or signs of dehydration."
+    },
+    {
+      keywords: ["diarrhea", "diarrhoea", "loose motion"],
+      answer:
+        "Drink fluids and use ORS to replace lost water and salts. Seek medical help for blood in stool, severe pain, high fever, or signs of dehydration."
+    }
+  ];
+
+  const matched = healthAnswers.find(item =>
+    item.keywords.some(word => question.includes(word))
   );
-
-  if (matched) {
-    return res.json({
-      success: true,
-      answer: matched.answer,
-      sourceNote: "General health information; not a medical diagnosis."
-    });
-  }
 
   return res.json({
     success: true,
-    answer:
-      "I can share general health information, but I could not confidently match your question. Please consult a qualified healthcare professional for advice specific to your situation.",
+    answer: matched
+      ? matched.answer
+      : "I can share general health information, but I could not confidently match your question. Please consult a qualified healthcare professional for advice specific to your situation.",
     sourceNote: "General health information; not a medical diagnosis."
   });
 });
@@ -135,8 +122,8 @@ app.post("/api/health-assistant", (req, res) => {
 // Gemini AI health assistant
 app.post("/api/ai-health-assistant", async (req, res) => {
   try {
-    const question = String(req.body.question || "").trim();
-    const language = String(req.body.language || "en").toLowerCase();
+    const question = String(req.body?.question || "").trim();
+    const language = String(req.body?.language || "en").toLowerCase();
 
     if (!question) {
       return res.status(400).json({
@@ -145,92 +132,131 @@ app.post("/api/ai-health-assistant", async (req, res) => {
       });
     }
 
-    // Handle possible emergencies before calling AI.
+    if (question.length > 4000) {
+      return res.status(400).json({
+        success: false,
+        message: "Please keep your question under 4000 characters."
+      });
+    }
+
+    // Handle emergencies before calling the AI.
     const normalizedQuestion = question.toLowerCase();
 
     if (
-      emergencyKeywords.some((word) =>
-        normalizedQuestion.includes(word)
-      )
+      emergencyKeywords.some(word => normalizedQuestion.includes(word))
     ) {
       return res.json({
         success: true,
         emergency: true,
         answer:
-          "Your symptoms may be an emergency. Please call India's emergency number 112 or go to the nearest emergency department immediately. Do not wait for an AI response.",
+          "Your symptoms may be an emergency. In India, call 112 or go to the nearest emergency department immediately. Do not wait for an AI response.",
         sourceNote: "Emergency safety guidance"
       });
     }
 
-    // Check whether the Gemini API key is configured.
     if (!ai) {
+      console.error("GEMINI_API_KEY is not configured.");
+
       return res.status(503).json({
         success: false,
         message:
-          "Gemini AI is not configured. Please add your API key to the .env file and restart the server."
+          "AI service is not configured. Please check the GEMINI_API_KEY environment variable in Render."
       });
     }
 
-    const responseLanguage =
-      language === "hi" || language === "hindi"
-        ? "simple Hindi"
-        : language === "hinglish"
-        ? "simple Hinglish"
-        : "simple English";
+    let responseLanguage = "simple English";
+
+    if (language === "hi" || language === "hindi") {
+      responseLanguage = "simple Hindi";
+    } else if (language === "hinglish") {
+      responseLanguage = "simple Hinglish";
+    }
 
     const prompt = `
 You are RuralHealth Connect, a rural health information assistant.
 
 Answer the user's question in ${responseLanguage}.
 
-Safety rules:
-- Provide general educational health information, not a diagnosis.
-- Use clear, simple language suitable for rural communities.
-- Give practical, low-risk suggestions when appropriate.
-- Never prescribe medicines or invent medication dosages.
-- Do not claim that you are a doctor.
-- Explain warning signs and when to seek professional medical care.
-- If the question requires a medical professional, clearly say so.
-- Do not invent medical references or claim you verified a source.
-- Keep the response concise and easy to understand.
+Rules:
+- Give general educational health information, not a diagnosis.
+- Use clear, simple language.
+- Offer practical, low-risk suggestions when appropriate.
+- Do not prescribe medicines or invent dosages.
+- Never claim to be a doctor.
+- Explain warning signs and when professional care is needed.
+- Never invent references or claim to have verified a source.
+- Keep the answer concise and understandable.
+- If the question is unrelated to health, politely explain your role.
 
-User's question:
+User question:
 ${question}
 `;
 
-    console.log("Gemini AI request received.");
+    console.log("AI health request received.");
 
     const result = await ai.models.generateContent({
-      model: "gemma-4-26b-a4b-it",
-      contents: prompt
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
+        temperature: 0.3,
+        maxOutputTokens: 700
+      }
     });
 
-    const answer = result.text;
+    const answer =
+      typeof result.text === "string" ? result.text.trim() : "";
 
     if (!answer) {
-      throw new Error("The AI returned an empty response.");
+      console.error("Gemini returned an empty response.");
+
+      return res.status(502).json({
+        success: false,
+        message: "The AI returned an empty answer. Please try again."
+      });
     }
+
+    console.log("AI health response generated successfully.");
 
     return res.json({
       success: true,
-      answer: answer,
-      language: language,
+      answer,
+      language,
       sourceNote:
-        "AI-generated general health information. Not a diagnosis; verify medical advice with a qualified healthcare professional."
+        "AI-generated general health information. This is not a diagnosis; consult a qualified healthcare professional."
     });
-  } catch (error) {
-    console.error("AI assistant error:", error.message);
 
-    return res.status(500).json({
+  } catch (error) {
+    // Keep detailed errors in server logs, not in public responses.
+    console.error("AI assistant error:", {
+      message: error.message,
+      status: error.status || error.statusCode || null
+    });
+
+    const status = error.status || error.statusCode;
+
+    if (status === 429) {
+      return res.status(429).json({
+        success: false,
+        message: "AI request limit reached. Please wait and try again."
+      });
+    }
+
+    if (status === 401 || status === 403) {
+      return res.status(502).json({
+        success: false,
+        message: "AI authentication failed. Check the Gemini API key and its permissions in Render."
+      });
+    }
+
+    return res.status(502).json({
       success: false,
       message:
-        "The AI assistant could not generate a response. Check your API key, model access, and server terminal.",
-      error: error.message
+        "The AI service could not generate an answer. Please try again shortly."
     });
   }
 });
 
-// Unknown API route handler
+// Handle unknown API routes
 app.use("/api", (req, res) => {
   res.status(404).json({
     success: false,
@@ -242,8 +268,9 @@ app.use("/api", (req, res) => {
 // Start server
 app.listen(PORT, "0.0.0.0", () => {
   console.log("==================================");
-  console.log("RuralHealth Connect is running!");
-  console.log(`Local URL: http://localhost:${PORT}`);
-  console.log("AI health route: POST /api/ai-health-assistant");
+  console.log("RuralHealth Connect backend started.");
+  console.log(`Port: ${PORT}`);
+  console.log(`Gemini configured: ${Boolean(apiKey)}`);
+  console.log("AI route: POST /api/ai-health-assistant");
   console.log("==================================");
 });
