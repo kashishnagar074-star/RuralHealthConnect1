@@ -2,7 +2,7 @@
 // RuralHealth Connect AI — Frontend
 // Connects the website to the Express AI backend
 // ============================================
-
+const API_BASE_URL = "https://ruralhealthconnect1.onrender.com";
 const modalRoot = document.getElementById("modalRoot");
 const modalContent = document.getElementById("modalContent");
 const closeModalButton = document.getElementById("closeModal");
@@ -441,16 +441,18 @@ async function handleAssistantSubmit(event) {
   }
 
   try {
-    const response = await fetch("/api/ai-health-assistant", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        question: question,
-        language: currentLanguage
-      })
-    });
+
+const response = await fetch(`${API_BASE_URL}/api/ai-health-assistant`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    question: question,
+    language: currentLanguage
+  })
+});
+
 
     const data = await response.json();
 
