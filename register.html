@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | RuralHealth Connect</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+    <div class="auth-container">
+
+        <div class="auth-info">
+            <div class="brand">💚 RuralHealth Connect</div>
+
+            <h1>Your Health,<br>Your Priority.</h1>
+
+            <p>
+                Join our community to access health information
+                and connect with healthcare services.
+            </p>
+
+            <div class="health-icon">🏥</div>
+
+            <p class="tagline">Healthcare access for everyone.</p>
+        </div>
+
+        <div class="auth-form">
+            <h2>Create Account</h2>
+
+            <p class="subtitle">Register to get started.</p>
+
+            <form id="registerForm">
+
+                <label for="fullName">Full Name</label>
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="phone">Phone Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter 10-digit phone number"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password (min. 8 characters)"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Re-enter your password"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <label class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <span>I agree to the Terms of Service and Privacy Policy.</span>
+                </label>
+
+                <button type="submit" class="auth-btn">
+                    Create Account
+                </button>
+
+                <p id="registerMessage" role="status"></p>
+
+            </form>
+
+            <p class="switch-link">
+                Already have an account?
+                <a href="login.html">Login</a>
+            </p>
+
+            <p class="back-home">
+                <a href="index.html">← Back to Home</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

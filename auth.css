@@ -1,0 +1,317 @@
+```css
+/* ==============================
+   GLOBAL STYLES
+============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f7f4;
+    color: #24352e;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+/* ==============================
+   MAIN CONTAINER
+============================== */
+
+.auth-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 1000px;
+    background: #ffffff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 15px 45px rgba(22, 70, 48, 0.12);
+}
+
+/* ==============================
+   LEFT BRANDING SECTION
+============================== */
+
+.auth-info {
+    background: linear-gradient(145deg, #087f5b, #0b5945);
+    color: #ffffff;
+    padding: 55px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.brand {
+    font-size: 21px;
+    font-weight: bold;
+    margin-bottom: 55px;
+}
+
+.auth-info h1 {
+    font-size: 39px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.auth-info p {
+    line-height: 1.7;
+    color: #e0f5eb;
+}
+
+.health-icon {
+    font-size: 85px;
+    margin: 30px 0 10px;
+}
+
+.tagline {
+    font-size: 14px;
+}
+
+/* ==============================
+   RIGHT FORM SECTION
+============================== */
+
+.auth-form {
+    padding: 45px 40px;
+}
+
+.auth-form h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+    color: #155c43;
+}
+
+.subtitle {
+    color: #718078;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* ==============================
+   FORM LABELS
+============================== */
+
+.auth-form form > label:not(.terms) {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 16px 0 8px;
+}
+
+/* ==============================
+   INPUT FIELDS
+============================== */
+
+.auth-form input:not([type="checkbox"]) {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d6e2dc;
+    border-radius: 9px;
+    outline: none;
+    font-size: 14px;
+    background: #ffffff;
+    color: #24352e;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-form input:focus {
+    border-color: #15966b;
+    box-shadow: 0 0 0 3px rgba(21, 150, 107, 0.1);
+}
+
+/* ==============================
+   LOGIN OPTIONS
+============================== */
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 22px;
+    font-size: 12px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #66756d;
+}
+
+.remember input {
+    cursor: pointer;
+}
+
+.login-options a {
+    color: #087f5b;
+    text-decoration: none;
+}
+
+.login-options a:hover {
+    text-decoration: underline;
+}
+
+/* ==============================
+   REGISTRATION TERMS
+============================== */
+
+.terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: 20px 0;
+    font-size: 12px;
+    color: #66756d;
+    line-height: 1.5;
+}
+
+.terms input {
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+/* ==============================
+   SUBMIT BUTTON
+============================== */
+
+.auth-btn {
+    width: 100%;
+    border: none;
+    border-radius: 9px;
+    padding: 14px;
+    background: #087f5b;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.auth-btn:hover {
+    background: #066647;
+    transform: translateY(-1px);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+.auth-btn:focus-visible {
+    outline: 3px solid #8ed9ba;
+    outline-offset: 3px;
+}
+
+/* ==============================
+   ACCOUNT SWITCH LINKS
+============================== */
+
+.switch-link {
+    text-align: center;
+    margin-top: 23px;
+    color: #718078;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.switch-link a,
+.back-home a {
+    color: #087f5b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.switch-link a:hover,
+.back-home a:hover {
+    text-decoration: underline;
+}
+
+.back-home {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+/* ==============================
+   FORM STATUS MESSAGES
+============================== */
+
+#loginMessage,
+#registerMessage {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ==============================
+   MOBILE RESPONSIVE DESIGN
+============================== */
+
+@media (max-width: 750px) {
+    body {
+        padding: 12px;
+        align-items: flex-start;
+    }
+
+    .auth-container {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: auto;
+    }
+
+    .auth-info {
+        padding: 30px 25px;
+    }
+
+    .brand {
+        margin-bottom: 25px;
+        font-size: 19px;
+    }
+
+    .auth-info h1 {
+        font-size: 30px;
+    }
+
+    .health-icon {
+        display: none;
+    }
+
+    .auth-form {
+        padding: 30px 25px;
+    }
+
+    .auth-form h2 {
+        font-size: 27px;
+    }
+}
+
+/* ==============================
+   SMALL MOBILE SCREENS
+============================== */
+
+@media (max-width: 380px) {
+    body {
+        padding: 8px;
+    }
+
+    .auth-info,
+    .auth-form {
+        padding: 25px 18px;
+    }
+
+    .auth-info h1 {
+        font-size: 26px;
+    }
+
+    .login-options {
+        flex-wrap: wrap;
+    }
+}
+```

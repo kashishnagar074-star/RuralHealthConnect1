@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | RuralHealth Connect</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+    <div class="auth-container">
+
+        <!-- Left Side: Healthcare Branding -->
+        <div class="auth-info">
+            <div class="brand">💚 RuralHealth Connect</div>
+
+            <h1>Your Health,<br>Your Priority.</h1>
+
+            <p>
+                Access trusted health information and connect
+                with healthcare services wherever you live.
+            </p>
+
+            <div class="health-icon">🏥</div>
+
+            <p class="tagline">
+                Healthcare access for everyone.
+            </p>
+        </div>
+
+        <!-- Right Side: Login Form -->
+        <div class="auth-form">
+            <h2>Welcome Back!</h2>
+
+            <p class="subtitle">
+                Login to your account to continue.
+            </p>
+
+            <form id="loginForm">
+
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <div class="login-options">
+                    <label class="remember">
+                        <input type="checkbox" id="rememberMe">
+                        Remember me
+                    </label>
+
+                    <a href="#" id="forgotPassword">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="auth-btn">
+                    Login
+                </button>
+
+                <p id="loginMessage" role="status"></p>
+
+            </form>
+
+            <p class="switch-link">
+                Don't have an account?
+                <a href="register.html">Create Account</a>
+            </p>
+
+            <p class="back-home">
+                <a href="index.html">← Back to Home</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

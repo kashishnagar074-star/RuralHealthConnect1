@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RuralHealth Connect AI</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<header class="navbar">
+  <a href="#" class="brand">💚 RuralHealth <span>Connect AI</span></a>
+  <div class="nav-actions">
+    <button id="languageBtn" class="btn btn-light">हिंदी</button>
+    <a href="#services" class="btn btn-primary" data-i18n="explore">Explore Services</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge" data-i18n="badge">🌿 Healthcare for every village</div>
+      <h1 data-i18n="heroTitle">Better Healthcare,<br><span>Closer to Home.</span></h1>
+      <p data-i18n="heroText">Access trusted health information, first-aid guidance and nearby medical facilities — all in one place.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" data-open="assistant" data-i18n="ask">💬 Ask Health Assistant</button>
+        <button class="btn btn-outline" data-open="firstaid" data-i18n="firstaid">🩹 First Aid Guide</button>
+      </div>
+      <div class="trust">✓ Simple to use &nbsp; ✓ Hindi and English &nbsp; ✓ Free access</div>
+    </div>
+    <div class="hero-art">
+      <div class="circle"></div>
+      <div class="health-card">
+        <div class="doctor-icon">🧑‍⚕️</div>
+        <h3 data-i18n="healthcare">Healthcare for Everyone</h3>
+        <p data-i18n="healthcareText">Information and support when you need it.</p>
+        <div class="health-status">● <span data-i18n="available">Health resources available</span></div>
+      </div>
+      <div class="floating-icon icon-one">💚</div>
+      <div class="floating-icon icon-two">🩺</div>
+      <div class="floating-icon icon-three">🏥</div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div><strong>24/7</strong><span data-i18n="stat1">Health information</span></div>
+    <div><strong>02</strong><span data-i18n="stat2">Languages supported</span></div>
+    <div><strong>01</strong><span data-i18n="stat3">Easy-to-use platform</span></div>
+  </section>
+
+  <section id="services" class="section">
+    <div class="section-heading">
+      <span class="eyebrow" data-i18n="eyebrow">OUR SERVICES</span>
+      <h2 data-i18n="sectionTitle">Healthcare support, made simpler.</h2>
+      <p data-i18n="sectionText">Choose a service to get started.</p>
+    </div>
+
+    <div class="service-grid">
+      <button class="service-card" data-open="assistant">
+        <div class="service-icon green">💬</div>
+        <h3 data-i18n="card1">AI Health Assistant</h3>
+        <p data-i18n="card1text">Ask general health questions in simple language.</p>
+        <span class="card-link" data-i18n="start">Get started →</span>
+      </button>
+
+      <button class="service-card" data-open="firstaid">
+        <div class="service-icon orange">🩹</div>
+        <h3 data-i18n="card2">First Aid Guide</h3>
+        <p data-i18n="card2text">Learn basic first-aid steps for common emergencies.</p>
+        <span class="card-link" data-i18n="learn">Learn more →</span>
+      </button>
+
+      <button class="service-card" data-open="hospital">
+        <div class="service-icon blue">🏥</div>
+        <h3 data-i18n="card3">Find Nearby Hospitals</h3>
+        <p data-i18n="card3text">Find hospitals and clinics near your location.</p>
+        <span class="card-link" data-i18n="find">Find facilities →</span>
+      </button>
+
+      <button class="service-card" data-open="emergency">
+        <div class="service-icon red">🚨</div>
+        <h3 data-i18n="card4">Emergency Help</h3>
+        <p data-i18n="card4text">Quick access to emergency information.</p>
+        <span class="card-link" data-i18n="gethelp">Get help →</span>
+      </button>
+
+      <button class="service-card" data-open="library">
+        <div class="service-icon purple">📚</div>
+        <h3 data-i18n="card5">Health Knowledge</h3>
+        <p data-i18n="card5text">Explore hygiene, nutrition and prevention tips.</p>
+        <span class="card-link" data-i18n="exploremore">Explore topics →</span>
+      </button>
+
+      <button class="service-card" data-open="voice">
+        <div class="service-icon teal">🎙️</div>
+        <h3 data-i18n="card6">Voice Assistance</h3>
+        <p data-i18n="card6text">Ask your question using your voice, if supported.</p>
+        <span class="card-link" data-i18n="tryvoice">Try voice →</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="emergency-banner">
+    <div class="emergency-symbol">🚑</div>
+    <div>
+      <h2 data-i18n="emergencyTitle">Medical emergency?</h2>
+      <p data-i18n="emergencyText">Do not wait for an online response. Contact emergency services or visit the nearest emergency department.</p>
+    </div>
+    <button class="btn btn-white" data-open="emergency" data-i18n="emergencyBtn">Emergency Information →</button>
+  </section>
+
+  <section class="disclaimer">
+    <strong>⚕️ <span data-i18n="disclaimerTitle">Important health notice</span></strong>
+    <p data-i18n="disclaimer">This website provides general educational information, not a medical diagnosis. Always consult a qualified healthcare professional. In a life-threatening emergency, seek immediate medical help.</p>
+  </section>
+</main>
+
+<footer>
+  <a href="#" class="brand">💚 RuralHealth Connect AI</a>
+  <p data-i18n="footer">Bringing health information closer to every community.</p>
+  <small>© 2026 RuralHealth Connect AI · Student Prototype</small>
+</footer>
+
+<div id="modalRoot" class="modal-root" hidden>
+  <div class="modal-backdrop" data-close="true"></div>
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="closeModal" aria-label="Close">✕</button>
+    <div id="modalContent"></div>
+  </section>
+</div>
+
+<div id="toast" class="toast" role="status"></div>
+
+</body>
+</html>
